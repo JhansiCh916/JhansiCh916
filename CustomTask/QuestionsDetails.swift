@@ -8,24 +8,13 @@
 import Foundation
 import UIKit
 
- 
 class QuestionsDetails : UIView {
     
     private let mainLayer : CALayer = CALayer()
-    private let shapeLayer1 : CAShapeLayer = CAShapeLayer()
-    private let shapeLayer2 : CAShapeLayer = CAShapeLayer()
-    private let shapeLayer3 : CAShapeLayer = CAShapeLayer()
-    private let shapeLayer4 : CAShapeLayer = CAShapeLayer()
-    private let shapeLayer5 : CAShapeLayer = CAShapeLayer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpLabelsView()
-        addSubview(primaryLabel)
-        addSubview(secondaryLabel)
-        addSubview(thirdLabel)
-        addSubview(fourthLabel)
-        addSubview(fifthLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -34,114 +23,56 @@ class QuestionsDetails : UIView {
     
     func setUpLabelsView() {
         layer.addSublayer(mainLayer)
-        mainLayer.addSublayer(shapeLayer1)
-        mainLayer.addSublayer(shapeLayer2)
-        mainLayer.addSublayer(shapeLayer3)
-        mainLayer.addSublayer(shapeLayer4)
-        mainLayer.addSublayer(shapeLayer5)
     }
     
-    private let primaryLabel : UILabel = {
-        let primaryLabel = UILabel()
-        primaryLabel.numberOfLines = 1
-        primaryLabel.textColor = .black
-        primaryLabel.textAlignment = .left
-        primaryLabel.font = .systemFont(ofSize: 15,weight : .regular)
-        return primaryLabel
-    }()
-    
-    private let secondaryLabel : UILabel = {
-        let secondaryLabel = UILabel()
-        secondaryLabel.numberOfLines = 1
-        secondaryLabel.textColor = .black
-        secondaryLabel.textAlignment = .left
-        secondaryLabel.font = .systemFont(ofSize: 15,weight : .regular)
-        return secondaryLabel
-    }()
-    
-    private let thirdLabel : UILabel = {
-        let thirdLabel = UILabel()
-        thirdLabel.numberOfLines = 1
-        thirdLabel.textColor = .black
-        thirdLabel.textAlignment = .left
-        thirdLabel.font = .systemFont(ofSize: 15,weight : .regular)
-        return thirdLabel
-    }()
-    
-    private let fourthLabel : UILabel = {
-        let fourthLabel = UILabel()
-        fourthLabel.numberOfLines = 1
-        fourthLabel.textColor = .black
-        fourthLabel.textAlignment = .left
-        fourthLabel.font = .systemFont(ofSize: 15,weight : .regular)
-        return fourthLabel
-    }()
-    
-    private let fifthLabel : UILabel = {
-        let fifthLabel = UILabel()
-        fifthLabel.numberOfLines = 1
-        fifthLabel.textColor = .black
-        fifthLabel.textAlignment = .left
-        fifthLabel.font = .systemFont(ofSize: 15,weight : .regular)
-        return fifthLabel
-    }()
+    func creatingATextLayer(string : String,rect : CGRect,xPos : CGFloat,yPos : CGFloat) -> CATextLayer {
+        let width = frame.width/2
+        let height = 30.0
+        let layer = CATextLayer()
+        layer.string = string
+        layer.backgroundColor = UIColor.clear.cgColor
+        layer.foregroundColor = UIColor(red: 33.0/255, green: 34.0/255, blue: 38.0/255, alpha: 8.0).cgColor
+        layer.fontSize = 15
+        layer.frame = CGRect(x: xPos, y: yPos, width: width, height: height)
+        layer.alignmentMode = .left
+        return layer
+    }
     
     func configure(with viewModel : LabelRecord) {
-        primaryLabel.text = viewModel.correctAnswersLbl
-        secondaryLabel.text = viewModel.skippedVisitedLbl
-        thirdLabel.text = viewModel.skippedNotVisitedLbl
-        fourthLabel.text = viewModel.partiallyVisitedLbl
-        fifthLabel.text = viewModel.inCorrectQuestionsLbl
+        let textLayer1 = creatingATextLayer(string: viewModel.correctAnswersLbl, rect: frame, xPos: 15.0, yPos: 15.0)
+        mainLayer.addSublayer(textLayer1)
+        let textLayer2 = creatingATextLayer(string: viewModel.skippedVisitedLbl, rect: frame, xPos: 15, yPos: 45)
+        mainLayer.addSublayer(textLayer2)
+        let textLayer3  = creatingATextLayer(string: viewModel.skippedNotVisitedLbl, rect: frame, xPos: 15, yPos: 75)
+        mainLayer.addSublayer(textLayer3)
+        let textLayer4 = creatingATextLayer(string: viewModel.inCorrectQuestionsLbl, rect: frame, xPos: frame.width/2 + 10, yPos: 15)
+        mainLayer.addSublayer(textLayer4)
+        let textLayer5 = creatingATextLayer(string: viewModel.partiallyVisitedLbl, rect: frame, xPos: frame.width/2 + 10, yPos: 45)
+        mainLayer.addSublayer(textLayer5)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        primaryLabel.frame = CGRect(x: 15, y: 10, width: frame.width/2, height: 30)
-        secondaryLabel.frame = CGRect(x: 15, y: 40, width: frame.width/2, height: 30)
-        thirdLabel.frame = CGRect(x: 15, y: 70, width: frame.width/2, height: 30)
-        fourthLabel.frame = CGRect(x: frame.width/2 + 10, y: 40, width: frame.width/2, height: 30)
-        fifthLabel.frame = CGRect(x: frame.width/2 + 10, y: 10, width: frame.width/2, height: 30)
-        shapeLayer1.frame = CGRect(x: 5, y: 10, width: 10, height: 10)
-        shapeLayer2.frame = CGRect(x: 5, y: 40, width: 10, height: 10)
-        shapeLayer3.frame = CGRect(x: 5, y: 70, width: 10, height: 10)
-        shapeLayer4.frame = CGRect(x: frame.width/2, y: 10, width: 10, height: 10)
-        shapeLayer5.frame = CGRect(x: frame.width/2, y: 40, width: 10, height: 10)
+    func circle(xCord : CGFloat,yCord : CGFloat,centerYPosition : Int,Colour : UIColor,rect : CGRect) -> CAShapeLayer {
+        let layer = CAShapeLayer()
+        let path = UIBezierPath()
+        path.addArc(withCenter: CGPoint(x: 5, y: centerYPosition), radius: 4, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
+        path.lineWidth = 2
+        layer.fillColor = Colour.cgColor
+        layer.strokeColor = Colour.cgColor
+        layer.path = path.cgPath
+        layer.frame = CGRect(x: xCord, y: yCord, width: 10, height: 10)
+        return layer
     }
     
-     func circle() {
-        let path1 = UIBezierPath()
-        path1.addArc(withCenter: CGPoint(x: 5, y: 15), radius: 4, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
-        path1.lineWidth = 2
-        shapeLayer1.fillColor = UIColor.systemGreen.cgColor
-        shapeLayer1.strokeColor = UIColor.systemGreen.cgColor
-        shapeLayer1.path = path1.cgPath
-        
-        let path2 = UIBezierPath()
-        path2.addArc(withCenter: CGPoint(x: 5, y: 45), radius: 4, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
-        path1.lineWidth = 2
-        shapeLayer2.fillColor = UIColor.systemOrange.cgColor
-        shapeLayer2.strokeColor = UIColor.systemOrange.cgColor
-        shapeLayer2.path = path1.cgPath
-        
-        let path3 = UIBezierPath()
-        path3.addArc(withCenter: CGPoint(x: 5, y: 75), radius: 4, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
-        path1.lineWidth = 2
-        shapeLayer3.fillColor = UIColor.systemYellow.cgColor
-        shapeLayer3.strokeColor = UIColor.systemYellow.cgColor
-        shapeLayer3.path = path1.cgPath
-        
-        let path4 = UIBezierPath()
-        path4.addArc(withCenter: CGPoint(x: 5, y: 45), radius: 4, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
-        path1.lineWidth = 2
-        shapeLayer4.fillColor = UIColor.systemRed.cgColor
-        shapeLayer4.strokeColor = UIColor.systemRed.cgColor
-        shapeLayer4.path = path1.cgPath
-        
-        let path5 = UIBezierPath()
-        path5.addArc(withCenter: CGPoint(x: 5, y: 45), radius: 4, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
-        path1.lineWidth = 2
-        shapeLayer5.fillColor = UIColor.systemCyan.cgColor
-        shapeLayer5.strokeColor = UIColor.systemCyan.cgColor
-        shapeLayer5.path = path1.cgPath
+    func circleConfigure() {
+        let path1 = circle(xCord : 5,yCord : 10,centerYPosition: 15, Colour: UIColor.systemGreen, rect: frame)
+        mainLayer.addSublayer(path1)
+        let path2 = circle(xCord : 5,yCord : 20,centerYPosition: 35, Colour: UIColor.systemOrange, rect: frame)
+        mainLayer.addSublayer(path2)
+        let path3 = circle(xCord : 5,yCord : 30,centerYPosition: 55, Colour: UIColor.systemYellow, rect: frame)
+        mainLayer.addSublayer(path3)
+        let path4 = circle(xCord : frame.width/2,yCord : 10,centerYPosition: 15, Colour: UIColor.systemRed, rect: frame)
+        mainLayer.addSublayer(path4)
+        let path5 = circle(xCord: frame.width/2,yCord: 20,centerYPosition: 35, Colour: UIColor.systemCyan, rect: frame)
+        mainLayer.addSublayer(path5)
     }
 }
