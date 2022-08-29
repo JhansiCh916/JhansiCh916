@@ -126,22 +126,22 @@ class QuestionsDetails : UIView {
         let path3 = UIBezierPath()
         path3.addArc(withCenter: CGPoint(x: 5, y: 75), radius: 4, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
         path1.lineWidth = 2
-        shapeLayer3.fillColor = UIColor.systemCyan.cgColor
-        shapeLayer3.strokeColor = UIColor.systemCyan.cgColor
+        shapeLayer3.fillColor = UIColor.systemYellow.cgColor
+        shapeLayer3.strokeColor = UIColor.systemYellow.cgColor
         shapeLayer3.path = path1.cgPath
         
         let path4 = UIBezierPath()
         path4.addArc(withCenter: CGPoint(x: 5, y: 45), radius: 4, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
         path1.lineWidth = 2
-        shapeLayer4.fillColor = UIColor.systemYellow.cgColor
-        shapeLayer4.strokeColor = UIColor.systemYellow.cgColor
+        shapeLayer4.fillColor = UIColor.systemRed.cgColor
+        shapeLayer4.strokeColor = UIColor.systemRed.cgColor
         shapeLayer4.path = path1.cgPath
         
         let path5 = UIBezierPath()
         path5.addArc(withCenter: CGPoint(x: 5, y: 45), radius: 4, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
         path1.lineWidth = 2
-        shapeLayer5.fillColor = UIColor.red.cgColor
-        shapeLayer5.strokeColor = UIColor.red.cgColor
+        shapeLayer5.fillColor = UIColor.systemCyan.cgColor
+        shapeLayer5.strokeColor = UIColor.systemCyan.cgColor
         shapeLayer5.path = path1.cgPath
     }
 }

@@ -37,9 +37,9 @@ class StudentsRecords : UIView {
         
         drawBarCorrectAnswers(xPos: xPosCorrectAnswers, yPos: yPos)
         drawBarSkippedVisted(xPos: xPosSkippedVisited, yPos: yPos, startPosition: xPosCorrectAnswers + 10)
-        drawBarPartiallyCorrect(xPos: xPosPartiallyCorrect, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited)
-        drawBarSkippedNotVisited(xPos: xPosSkippedNotVisted, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect)
-        drawBarInCorrectAnswers(xPos: xPosInCorrectAnswers, yPos: yPos, startPosition:  xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect + xPosSkippedNotVisted)
+        drawBarPartiallyCorrect(xPos: xPosPartiallyCorrect, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited + 10)
+        drawBarSkippedNotVisited(xPos: xPosSkippedNotVisted, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect + 10)
+        drawBarInCorrectAnswers(xPos: xPosInCorrectAnswers, yPos: yPos, startPosition:  xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect + xPosSkippedNotVisted + 10)
     }
     
     func drawBarCorrectAnswers(xPos : CGFloat,yPos : CGFloat) {
@@ -54,7 +54,7 @@ class StudentsRecords : UIView {
     func drawBarSkippedVisted(xPos : CGFloat,yPos : CGFloat,startPosition : CGFloat) {
         let barLayer = CALayer()
         barLayer.frame = CGRect(x: startPosition, y: yPos + 10, width: xPos, height: 40.0)
-        barLayer.backgroundColor = UIColor.orange.cgColor
+        barLayer.backgroundColor = UIColor.systemOrange.cgColor
         mainLayer.addSublayer(barLayer)
     }
     
@@ -75,7 +75,7 @@ class StudentsRecords : UIView {
     func drawBarInCorrectAnswers(xPos : CGFloat,yPos : CGFloat,startPosition : CGFloat) {
         let barLayer = CALayer()
         barLayer.frame = CGRect(x: startPosition, y: yPos + 10, width: xPos, height: 40.0)
-        barLayer.backgroundColor = UIColor.red.cgColor
+        barLayer.backgroundColor = UIColor.systemRed.cgColor
         barLayer.cornerRadius = 8
         barLayer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner]
         mainLayer.addSublayer(barLayer)

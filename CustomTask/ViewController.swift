@@ -13,7 +13,7 @@ class ViewController: UIViewController {
 
     lazy var studentsRecords: StudentsRecords = {
           let studentsRecords = StudentsRecords()
-        studentsRecords.frame = view.frame(forAlignmentRect: CGRect(x: view.center.x - 150, y: 100, width:  250, height: 150))
+        studentsRecords.frame = view.frame(forAlignmentRect: CGRect(x: view.center.x - 140, y: 100, width:  250, height: 150))
           return studentsRecords
        }()
     lazy var questionsDetails : QuestionsDetails = {
