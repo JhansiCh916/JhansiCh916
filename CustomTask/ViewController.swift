@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let questions = [20,20,20,20,20]
+    let questions = [40,10,10,5,35]
 
     lazy var studentsRecords: StudentsRecords = {
           let studentsRecords = StudentsRecords()
@@ -21,10 +21,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         if questions.sum() == 100 {
-            studentsRecords.dataEntries = [QuestionsRecord(correctQuestions: questions[0], skippedVisited: questions[1], partiallyCorrect: questions[2], skippedNotVisited: questions[3], inCorrectQuestions: questions[4])]
-            studentsRecords.configure(with: LabelRecord(correctAnswersLbl: " \(questions[0]) Correct Answers", skippedVisitedLbl: " \(questions[1]) Skipped Visited", partiallyVisitedLbl: " \(questions[2]) Partially Correct", skippedNotVisitedLbl: " \(questions[3]) Skipped Not Visted", inCorrectQuestionsLbl: " \(questions[4]) InCorrect  Answers"))
-            studentsRecords.circleConfigure()
-            
+            studentsRecords.dataEntries = [QuestionsRecord(value: questions[0], label: " \(questions[0]) Correct Answers", colour: .systemGreen),QuestionsRecord(value: questions[1], label: " \(questions[1]) Skipped Visited", colour: .systemOrange),QuestionsRecord(value: questions[2], label: " \(questions[2]) Partially Correct", colour: .systemCyan),QuestionsRecord(value: questions[3], label: " \(questions[3]) Skipped Not Visited", colour: .systemYellow),QuestionsRecord(value: questions[4], label: " \(questions[4]) InCorrect  Answers", colour: .systemRed)]
         }
         else {
             print("Total number of Questions must be 100")

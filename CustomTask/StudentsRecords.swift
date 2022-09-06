@@ -14,6 +14,10 @@ class StudentsRecords : UIView {
     let barHeight : CGFloat = 5.0
     var barLayer = CALayer()
     let studentRecordDetails : CALayer = CALayer()
+    var barWidth: CGFloat = 0.0
+    var textLayerYpos : CGFloat = 0
+    var yCord : CGFloat = 0
+    var centerYPosition : CGFloat = 0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,7 +34,7 @@ class StudentsRecords : UIView {
     }
 
     func drawBar(xPos : CGFloat,yPos : CGFloat,startPosition : CGFloat,colour : UIColor,height : CGFloat,rect : CGRect) -> CALayer {
-        barLayer = CALayer()
+        let barLayer = CALayer()
         barLayer.frame = CGRect(x: startPosition, y: yPos + 10, width: xPos, height: height)
         barLayer.backgroundColor = colour.cgColor
         return barLayer
@@ -38,27 +42,33 @@ class StudentsRecords : UIView {
     
     func showEntry(index : Int,entry : QuestionsRecord) {
     
-        let xPosCorrectAnswers : CGFloat = translateWidthValueToXPosition(value: Float(entry.correctQuestions) / Float(100.0))
-        let xPosSkippedVisited : CGFloat = translateWidthValueToXPosition(value: Float(entry.skippedVisited) / Float(100.0))
-        let xPosPartiallyCorrect : CGFloat = translateWidthValueToXPosition(value: Float(entry.partiallyCorrect) / Float(100.0))
-        let xPosSkippedNotVisted : CGFloat = translateWidthValueToXPosition(value: Float(entry.skippedNotVisited) / Float(100.0))
-        let xPosInCorrectAnswers : CGFloat = translateWidthValueToXPosition(value: Float(entry.inCorrectQuestions) / Float(100.0))
+        let xPos : CGFloat = translateWidthValueToXPosition(value: Float(entry.value) / Float(100.0))
         let yPos : CGFloat = 0
+        let AnswersBar = drawBar(xPos: xPos, yPos: index == 0 ? yPos - 10 : yPos, startPosition: index == 0 ? 0 : barWidth , colour: entry.colour, height: index == 0 ?  view1.frame.height : view1.frame.height - 20, rect: frame)
+        barWidth += xPos
+        view1.layer.addSublayer(AnswersBar)
         
-        let correctAnswersBar = drawBar(xPos: xPosCorrectAnswers, yPos: yPos - 10, startPosition: 0, colour: UIColor.systemGreen, height: view1.frame.height, rect: frame)
-        view1.layer.addSublayer(correctAnswersBar)
+        if index == 0 || index == 3 {
+            textLayerYpos = 75
+            yCord = 50
+            centerYPosition = 35
+        }
+        else if index == 1 || index == 4 {
+            textLayerYpos = 105
+            yCord = 70
+            centerYPosition = 45
+       }
+        else {
+            textLayerYpos = 135
+            yCord = 90
+            centerYPosition = 55
+        }
         
-        let skippedVisited = drawBar(xPos: xPosSkippedVisited, yPos: yPos, startPosition: xPosCorrectAnswers, colour: UIColor.systemOrange, height: view1.frame.height - 20, rect: frame)
-        view1.layer.addSublayer(skippedVisited)
+        let textLayer = creatingATextLayer(string: entry.label, rect: frame, xPos: index > 2 ? frame.width/2 + 10 : 15, textLayerYpos: textLayerYpos)
+        studentRecordDetails.addSublayer(textLayer)
         
-        let partiallyCorrect = drawBar(xPos: xPosPartiallyCorrect, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited, colour: UIColor.systemCyan, height: view1.frame.height - 20, rect: frame)
-        view1.layer.addSublayer(partiallyCorrect)
-        
-        let skippedNotVisited = drawBar(xPos: xPosSkippedNotVisted, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect, colour: UIColor.systemYellow, height: view1.frame.height - 20, rect: frame)
-        view1.layer.addSublayer(skippedNotVisited)
-        
-        let inCorrectAnswers = drawBar(xPos: xPosInCorrectAnswers, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect + xPosSkippedNotVisted, colour: UIColor.systemRed, height: view1.frame.height - 20, rect: frame)
-        view1.layer.addSublayer(inCorrectAnswers)
+        let path = circle(xCord : index > 2 ? frame.width/2 : 5,yCord : yCord,centerYPosition: Int(centerYPosition), Colour: entry.colour, rect: frame)
+        studentRecordDetails.addSublayer(path)
     }
     
     var dataEntries : [QuestionsRecord] = [] {
@@ -70,7 +80,7 @@ class StudentsRecords : UIView {
             view1.clipsToBounds = true
             view1.layer.cornerRadius = 12
             for i in 0..<dataEntries.count {
-                    showEntry(index: i, entry: dataEntries[i])
+                showEntry(index: i, entry: dataEntries[i])
             }
         }
     }
@@ -80,7 +90,7 @@ class StudentsRecords : UIView {
         return abs(width)
     }
     
-    func creatingATextLayer(string : String,rect : CGRect,xPos : CGFloat,yPos : CGFloat) -> CATextLayer {
+    func creatingATextLayer(string : String,rect : CGRect,xPos : CGFloat,textLayerYpos : CGFloat) -> CATextLayer {
         let width = frame.width/2
         let height = 30.0
         let layer = CATextLayer()
@@ -88,22 +98,9 @@ class StudentsRecords : UIView {
         layer.backgroundColor = UIColor.clear.cgColor
         layer.foregroundColor = UIColor(red: 33.0/255, green: 34.0/255, blue: 38.0/255, alpha: 8.0).cgColor
         layer.fontSize = 15
-        layer.frame = CGRect(x: xPos, y: yPos, width: width, height: height)
+        layer.frame = CGRect(x: xPos, y: textLayerYpos, width: width, height: height)
         layer.alignmentMode = .left
         return layer
-    }
-    
-    func configure(with viewModel : LabelRecord) {
-        let textLayer1 = creatingATextLayer(string: viewModel.correctAnswersLbl, rect: frame, xPos: 15.0, yPos: 75.0)
-        studentRecordDetails.addSublayer(textLayer1)
-        let textLayer2 = creatingATextLayer(string: viewModel.skippedVisitedLbl, rect: frame, xPos: 15, yPos: 105)
-        studentRecordDetails.addSublayer(textLayer2)
-        let textLayer3  = creatingATextLayer(string: viewModel.skippedNotVisitedLbl, rect: frame, xPos: 15, yPos: 135)
-        studentRecordDetails.addSublayer(textLayer3)
-        let textLayer4 = creatingATextLayer(string: viewModel.inCorrectQuestionsLbl, rect: frame, xPos: frame.width/2 + 10, yPos: 75)
-        studentRecordDetails.addSublayer(textLayer4)
-        let textLayer5 = creatingATextLayer(string: viewModel.partiallyVisitedLbl, rect: frame, xPos: frame.width/2 + 10, yPos: 105)
-        studentRecordDetails.addSublayer(textLayer5)
     }
     
     func circle(xCord : CGFloat,yCord : CGFloat,centerYPosition : Int,Colour : UIColor,rect : CGRect) -> CAShapeLayer {
@@ -117,17 +114,5 @@ class StudentsRecords : UIView {
         layer.frame = CGRect(x: xCord, y: yCord, width: 10, height: 10)
         return layer
     }
-    
-    func circleConfigure() {
-        let path1 = circle(xCord : 5,yCord : 50,centerYPosition: 35, Colour: UIColor.systemGreen, rect: frame)
-        studentRecordDetails.addSublayer(path1)
-        let path2 = circle(xCord : 5,yCord : 70,centerYPosition: 45, Colour: UIColor.systemOrange, rect: frame)
-        studentRecordDetails.addSublayer(path2)
-        let path3 = circle(xCord : 5,yCord : 90,centerYPosition: 55, Colour: UIColor.systemYellow, rect: frame)
-        studentRecordDetails.addSublayer(path3)
-        let path4 = circle(xCord : frame.width/2,yCord : 50,centerYPosition: 35, Colour: UIColor.systemRed, rect: frame)
-        studentRecordDetails.addSublayer(path4)
-        let path5 = circle(xCord: frame.width/2,yCord: 70,centerYPosition: 45, Colour: UIColor.systemCyan, rect: frame)
-        studentRecordDetails.addSublayer(path5)
-    }
+
 }

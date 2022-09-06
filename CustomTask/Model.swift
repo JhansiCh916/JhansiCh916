@@ -6,13 +6,12 @@
 //
 
 import Foundation
+import UIKit
 
 struct QuestionsRecord {
-    let correctQuestions : Int
-    let skippedVisited : Int
-    let partiallyCorrect : Int
-    let skippedNotVisited : Int
-    let inCorrectQuestions : Int
+    let value : Int
+    let label : String
+    let colour : UIColor
 }
 
 struct LabelRecord {
