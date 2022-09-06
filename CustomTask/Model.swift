@@ -14,11 +14,3 @@ struct QuestionsRecord {
     let colour : UIColor
 }
 
-struct LabelRecord {
-    let correctAnswersLbl : String
-    let skippedVisitedLbl : String
-    let partiallyVisitedLbl : String
-    let skippedNotVisitedLbl : String
-    let inCorrectQuestionsLbl : String
-}
-
