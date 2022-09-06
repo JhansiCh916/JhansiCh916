@@ -16,7 +16,6 @@
 		E695CFC028B9000500C2CB62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E695CFBE28B9000500C2CB62 /* LaunchScreen.storyboard */; };
 		E695CFC828B9037100C2CB62 /* StudentsRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = E695CFC728B9037100C2CB62 /* StudentsRecords.swift */; };
 		E695CFCA28B9068500C2CB62 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E695CFC928B9068500C2CB62 /* Model.swift */; };
-		E695CFCC28BA505600C2CB62 /* QuestionsDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E695CFCB28BA505600C2CB62 /* QuestionsDetails.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +30,6 @@
 		E695CFC128B9000500C2CB62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E695CFC728B9037100C2CB62 /* StudentsRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentsRecords.swift; sourceTree = "<group>"; };
 		E695CFC928B9068500C2CB62 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		E695CFCB28BA505600C2CB62 /* QuestionsDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsDetails.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +66,6 @@
 				E695CFB228B9000300C2CB62 /* SceneDelegate.swift */,
 				E695CFB428B9000300C2CB62 /* ViewController.swift */,
 				E695CFC728B9037100C2CB62 /* StudentsRecords.swift */,
-				E695CFCB28BA505600C2CB62 /* QuestionsDetails.swift */,
 				E695CFC928B9068500C2CB62 /* Model.swift */,
 				E695CFB628B9000300C2CB62 /* Main.storyboard */,
 				E695CFBC28B9000500C2CB62 /* Assets.xcassets */,
@@ -156,7 +153,6 @@
 				E695CFCA28B9068500C2CB62 /* Model.swift in Sources */,
 				E695CFB128B9000300C2CB62 /* AppDelegate.swift in Sources */,
 				E695CFB328B9000300C2CB62 /* SceneDelegate.swift in Sources */,
-				E695CFCC28BA505600C2CB62 /* QuestionsDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

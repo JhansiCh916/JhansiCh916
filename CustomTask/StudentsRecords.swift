@@ -10,9 +10,10 @@ import UIKit
 
 class StudentsRecords : UIView {
     
-    let mainLayer : CALayer = CALayer()
+    var view1 : UIView = UIView(frame: CGRect.zero)
     let barHeight : CGFloat = 5.0
-//    let barLayer = CALayer()
+    var barLayer = CALayer()
+    let studentRecordDetails : CALayer = CALayer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,10 +25,12 @@ class StudentsRecords : UIView {
     }
     
     private func setUpView() {
-        layer.addSublayer(mainLayer)
+        layer.addSublayer(studentRecordDetails)
+        addSubview(view1)
     }
-    func drawBar(xPos : CGFloat,yPos : CGFloat,startPosition : CGFloat,colour : UIColor,height : CGFloat,rect : CGRect) -> CALayer{
-        let barLayer = CALayer()
+
+    func drawBar(xPos : CGFloat,yPos : CGFloat,startPosition : CGFloat,colour : UIColor,height : CGFloat,rect : CGRect) -> CALayer {
+        barLayer = CALayer()
         barLayer.frame = CGRect(x: startPosition, y: yPos + 10, width: xPos, height: height)
         barLayer.backgroundColor = colour.cgColor
         return barLayer
@@ -40,32 +43,32 @@ class StudentsRecords : UIView {
         let xPosPartiallyCorrect : CGFloat = translateWidthValueToXPosition(value: Float(entry.partiallyCorrect) / Float(100.0))
         let xPosSkippedNotVisted : CGFloat = translateWidthValueToXPosition(value: Float(entry.skippedNotVisited) / Float(100.0))
         let xPosInCorrectAnswers : CGFloat = translateWidthValueToXPosition(value: Float(entry.inCorrectQuestions) / Float(100.0))
-        let yPos : CGFloat = 1
+        let yPos : CGFloat = 0
         
+        let correctAnswersBar = drawBar(xPos: xPosCorrectAnswers, yPos: yPos - 10, startPosition: 0, colour: UIColor.systemGreen, height: view1.frame.height, rect: frame)
+        view1.layer.addSublayer(correctAnswersBar)
         
-        let correctAnswersBar = drawBar(xPos: xPosCorrectAnswers, yPos: yPos - 10, startPosition: 0, colour: UIColor.systemGreen, height: frame.height, rect: frame)
-        mainLayer.addSublayer(correctAnswersBar)
+        let skippedVisited = drawBar(xPos: xPosSkippedVisited, yPos: yPos, startPosition: xPosCorrectAnswers, colour: UIColor.systemOrange, height: view1.frame.height - 20, rect: frame)
+        view1.layer.addSublayer(skippedVisited)
         
-        let skippedVisited = drawBar(xPos: xPosSkippedVisited, yPos: yPos, startPosition: xPosCorrectAnswers, colour: UIColor.systemOrange, height: frame.height - 20, rect: frame)
-        mainLayer.addSublayer(skippedVisited)
+        let partiallyCorrect = drawBar(xPos: xPosPartiallyCorrect, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited, colour: UIColor.systemCyan, height: view1.frame.height - 20, rect: frame)
+        view1.layer.addSublayer(partiallyCorrect)
         
-        let partiallyCorrect = drawBar(xPos: xPosPartiallyCorrect, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited, colour: UIColor.systemCyan, height: frame.height - 20, rect: frame)
-        mainLayer.addSublayer(partiallyCorrect)
+        let skippedNotVisited = drawBar(xPos: xPosSkippedNotVisted, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect, colour: UIColor.systemYellow, height: view1.frame.height - 20, rect: frame)
+        view1.layer.addSublayer(skippedNotVisited)
         
-        let skippedNotVisited = drawBar(xPos: xPosSkippedNotVisted, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect, colour: UIColor.systemYellow, height: frame.height - 20, rect: frame)
-        mainLayer.addSublayer(skippedNotVisited)
-        
-        let inCorrectAnswers = drawBar(xPos: xPosInCorrectAnswers, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect + xPosSkippedNotVisted, colour: UIColor.systemRed, height: frame.height - 20, rect: frame)
-        mainLayer.addSublayer(inCorrectAnswers)
-        
-        
+        let inCorrectAnswers = drawBar(xPos: xPosInCorrectAnswers, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect + xPosSkippedNotVisted, colour: UIColor.systemRed, height: view1.frame.height - 20, rect: frame)
+        view1.layer.addSublayer(inCorrectAnswers)
     }
     
     var dataEntries : [QuestionsRecord] = [] {
+        
         didSet {
-            mainLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
-            mainLayer.frame = bounds
-            mainLayer.backgroundColor = UIColor.systemCyan.cgColor
+            studentRecordDetails.sublayers?.forEach({$0.removeFromSuperlayer()})
+            studentRecordDetails.frame = CGRect(x: 0, y: 30, width: frame.width - 20, height: frame.height)
+            view1.frame = CGRect(x: 0, y: 0, width: frame.width, height: 52)
+            view1.clipsToBounds = true
+            view1.layer.cornerRadius = 12
             for i in 0..<dataEntries.count {
                     showEntry(index: i, entry: dataEntries[i])
             }
@@ -73,60 +76,58 @@ class StudentsRecords : UIView {
     }
     
     private func translateWidthValueToXPosition(value : Float) -> CGFloat {
-        let width = CGFloat(value) * (mainLayer.frame.width)
+        let width = CGFloat(value) * (layer.frame.width)
         return abs(width)
     }
+    
+    func creatingATextLayer(string : String,rect : CGRect,xPos : CGFloat,yPos : CGFloat) -> CATextLayer {
+        let width = frame.width/2
+        let height = 30.0
+        let layer = CATextLayer()
+        layer.string = string
+        layer.backgroundColor = UIColor.clear.cgColor
+        layer.foregroundColor = UIColor(red: 33.0/255, green: 34.0/255, blue: 38.0/255, alpha: 8.0).cgColor
+        layer.fontSize = 15
+        layer.frame = CGRect(x: xPos, y: yPos, width: width, height: height)
+        layer.alignmentMode = .left
+        return layer
+    }
+    
+    func configure(with viewModel : LabelRecord) {
+        let textLayer1 = creatingATextLayer(string: viewModel.correctAnswersLbl, rect: frame, xPos: 15.0, yPos: 75.0)
+        studentRecordDetails.addSublayer(textLayer1)
+        let textLayer2 = creatingATextLayer(string: viewModel.skippedVisitedLbl, rect: frame, xPos: 15, yPos: 105)
+        studentRecordDetails.addSublayer(textLayer2)
+        let textLayer3  = creatingATextLayer(string: viewModel.skippedNotVisitedLbl, rect: frame, xPos: 15, yPos: 135)
+        studentRecordDetails.addSublayer(textLayer3)
+        let textLayer4 = creatingATextLayer(string: viewModel.inCorrectQuestionsLbl, rect: frame, xPos: frame.width/2 + 10, yPos: 75)
+        studentRecordDetails.addSublayer(textLayer4)
+        let textLayer5 = creatingATextLayer(string: viewModel.partiallyVisitedLbl, rect: frame, xPos: frame.width/2 + 10, yPos: 105)
+        studentRecordDetails.addSublayer(textLayer5)
+    }
+    
+    func circle(xCord : CGFloat,yCord : CGFloat,centerYPosition : Int,Colour : UIColor,rect : CGRect) -> CAShapeLayer {
+        let layer = CAShapeLayer()
+        let path = UIBezierPath()
+        path.addArc(withCenter: CGPoint(x: 5, y: centerYPosition), radius: 4, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
+        path.lineWidth = 2
+        layer.fillColor = Colour.cgColor
+        layer.strokeColor = Colour.cgColor
+        layer.path = path.cgPath
+        layer.frame = CGRect(x: xCord, y: yCord, width: 10, height: 10)
+        return layer
+    }
+    
+    func circleConfigure() {
+        let path1 = circle(xCord : 5,yCord : 50,centerYPosition: 35, Colour: UIColor.systemGreen, rect: frame)
+        studentRecordDetails.addSublayer(path1)
+        let path2 = circle(xCord : 5,yCord : 70,centerYPosition: 45, Colour: UIColor.systemOrange, rect: frame)
+        studentRecordDetails.addSublayer(path2)
+        let path3 = circle(xCord : 5,yCord : 90,centerYPosition: 55, Colour: UIColor.systemYellow, rect: frame)
+        studentRecordDetails.addSublayer(path3)
+        let path4 = circle(xCord : frame.width/2,yCord : 50,centerYPosition: 35, Colour: UIColor.systemRed, rect: frame)
+        studentRecordDetails.addSublayer(path4)
+        let path5 = circle(xCord: frame.width/2,yCord: 70,centerYPosition: 45, Colour: UIColor.systemCyan, rect: frame)
+        studentRecordDetails.addSublayer(path5)
+    }
 }
-
-
-
-
-//drawBarCorrectAnswers(xPos: xPosCorrectAnswers, yPos: yPos)
-//drawBarSkippedVisted(xPos: xPosSkippedVisited, yPos: yPos, startPosition: xPosCorrectAnswers + 10)
-//drawBarPartiallyCorrect(xPos: xPosPartiallyCorrect, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited + 10)
-//drawBarSkippedNotVisited(xPos: xPosSkippedNotVisted, yPos: yPos, startPosition: xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect + 10)
-//drawBarInCorrectAnswers(xPos: xPosInCorrectAnswers, yPos: yPos, startPosition:  xPosCorrectAnswers + xPosSkippedVisited + xPosPartiallyCorrect + xPosSkippedNotVisted + 10)
-//}
-//
-//func drawBarCorrectAnswers(xPos : CGFloat,yPos : CGFloat) {
-//let barLayer = CALayer()
-//barLayer.frame = CGRect(x: 10, y: yPos, width: xPos, height: 60.0)
-//barLayer.backgroundColor = UIColor.systemGreen.cgColor
-//barLayer.cornerRadius = 12
-//barLayer.maskedCorners = [.layerMinXMaxYCorner,.layerMinXMinYCorner]
-//mainLayer.addSublayer(barLayer)
-//}
-//
-//func drawBarSkippedVisted(xPos : CGFloat,yPos : CGFloat,startPosition : CGFloat) {
-//let barLayer = CALayer()
-//barLayer.frame = CGRect(x: startPosition, y: yPos + 10, width: xPos, height: 40.0)
-//barLayer.backgroundColor = UIColor.systemOrange.cgColor
-//mainLayer.addSublayer(barLayer)
-//}
-//
-//func drawBarPartiallyCorrect(xPos : CGFloat,yPos : CGFloat,startPosition : CGFloat) {
-//let barLayer = CALayer()
-//barLayer.frame = CGRect(x: startPosition, y: yPos + 10, width: xPos, height: 40.0)
-//barLayer.backgroundColor = UIColor.systemCyan.cgColor
-//mainLayer.addSublayer(barLayer)
-//}
-//
-//func drawBarSkippedNotVisited(xPos : CGFloat,yPos : CGFloat,startPosition : CGFloat) {
-//let barLayer = CALayer()
-//barLayer.frame = CGRect(x: startPosition, y: yPos + 10, width: xPos, height: 40.0)
-//barLayer.backgroundColor = UIColor.systemYellow.cgColor
-//mainLayer.addSublayer(barLayer)
-//}
-//
-//func drawBarInCorrectAnswers(xPos : CGFloat,yPos : CGFloat,startPosition : CGFloat) {
-//let barLayer = CALayer()
-//barLayer.frame = CGRect(x: startPosition, y: yPos + 10, width: xPos, height: 40.0)
-//barLayer.backgroundColor = UIColor.systemRed.cgColor
-//barLayer.cornerRadius = 5
-//barLayer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner]
-//mainLayer.addSublayer(barLayer)
-//}
-
-
-
-//barHeight + CGFloat(dataEntries.count)
