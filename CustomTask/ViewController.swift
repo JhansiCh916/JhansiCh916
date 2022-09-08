@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let questions = [40,10,10,5,35]
+    let questions = [0,0,0,0,100]
 
     lazy var studentsRecords: StudentsRecords = {
           let studentsRecords = StudentsRecords()

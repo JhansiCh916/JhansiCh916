@@ -32,7 +32,7 @@ class StudentsRecords : UIView {
         layer.addSublayer(studentRecordDetails)
         addSubview(view1)
     }
-
+    
     func drawBar(xPos : CGFloat,yPos : CGFloat,startPosition : CGFloat,colour : UIColor,height : CGFloat,rect : CGRect) -> CALayer {
         let barLayer = CALayer()
         barLayer.frame = CGRect(x: startPosition, y: yPos + 10, width: xPos, height: height)
@@ -40,12 +40,43 @@ class StudentsRecords : UIView {
         return barLayer
     }
     
-    func showEntry(index : Int,entry : QuestionsRecord) {
+    var startPositionsList : [CGFloat] = []
+    var startPositionsAfter : [CGFloat] = []
     
+    func showEntry(index : Int,entry : QuestionsRecord) {
+        
         let xPos : CGFloat = translateWidthValueToXPosition(value: Float(entry.value) / Float(100.0))
         let yPos : CGFloat = 0
+        startPositionsList.append(barWidth)
         let AnswersBar = drawBar(xPos: xPos, yPos: index == 0 ? yPos - 10 : yPos, startPosition: index == 0 ? 0 : barWidth , colour: entry.colour, height: index == 0 ?  view1.frame.height : view1.frame.height - 20, rect: frame)
         barWidth += xPos
+        startPositionsAfter.append(barWidth)
+        
+        if round(startPositionsAfter.last ?? 0) == frame.width {
+            AnswersBar.cornerRadius = 12
+            AnswersBar.maskedCorners = [.layerMaxXMinYCorner,.layerMaxXMaxYCorner]
+        }
+        
+        for i in 0..<startPositionsList.count {
+            if startPositionsList[i] == 0.0  && (index == i) {
+                print("IOS")
+                AnswersBar.cornerRadius = 12
+                AnswersBar.maskedCorners = [.layerMinXMinYCorner,.layerMinXMaxYCorner]
+            }
+        }
+        
+        let dataEntries = dataEntries.filter { record in
+            if record.value == 100 {
+                return true
+            }
+            return false
+        }
+        
+        if startPositionsAfter.contains(frame.width) && startPositionsAfter.contains(0.0) && !dataEntries.isEmpty {
+            AnswersBar.cornerRadius = 12
+            AnswersBar.maskedCorners = [.layerMaxXMinYCorner,.layerMaxXMaxYCorner,.layerMinXMinYCorner,.layerMinXMaxYCorner]
+        }
+        
         view1.layer.addSublayer(AnswersBar)
         
         if index == 0 || index == 3 {
@@ -53,11 +84,13 @@ class StudentsRecords : UIView {
             yCord = 50
             centerYPosition = 35
         }
+        
         else if index == 1 || index == 4 {
             textLayerYpos = 105
             yCord = 70
             centerYPosition = 45
-       }
+        }
+        
         else {
             textLayerYpos = 135
             yCord = 90
@@ -114,5 +147,4 @@ class StudentsRecords : UIView {
         layer.frame = CGRect(x: xCord, y: yCord, width: 10, height: 10)
         return layer
     }
-
 }
