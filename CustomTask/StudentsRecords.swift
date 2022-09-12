@@ -8,10 +8,9 @@
 import Foundation
 import UIKit
 
-class StudentsRecords : UIView {
+class StudentsMarksRecords : UIView {
     
     var view1 : UIView = UIView(frame: CGRect.zero)
-    let barHeight : CGFloat = 5.0
     var barLayer = CALayer()
     let studentRecordDetails : CALayer = CALayer()
     var barWidth: CGFloat = 0.0
@@ -40,6 +39,8 @@ class StudentsRecords : UIView {
         return barLayer
     }
     
+    
+    
     var startPositionsList : [CGFloat] = []
     var startPositionsAfter : [CGFloat] = []
     
@@ -53,14 +54,14 @@ class StudentsRecords : UIView {
         startPositionsAfter.append(barWidth)
         
         if round(startPositionsAfter.last ?? 0) == frame.width {
-            AnswersBar.cornerRadius = 12
+            AnswersBar.cornerRadius = 8
             AnswersBar.maskedCorners = [.layerMaxXMinYCorner,.layerMaxXMaxYCorner]
         }
         
         for i in 0..<startPositionsList.count {
             if startPositionsList[i] == 0.0  && (index == i) {
                 print("IOS")
-                AnswersBar.cornerRadius = 12
+                AnswersBar.cornerRadius = 8
                 AnswersBar.maskedCorners = [.layerMinXMinYCorner,.layerMinXMaxYCorner]
             }
         }
@@ -73,7 +74,7 @@ class StudentsRecords : UIView {
         }
         
         if startPositionsAfter.contains(frame.width) && startPositionsAfter.contains(0.0) && !dataEntries.isEmpty {
-            AnswersBar.cornerRadius = 12
+            AnswersBar.cornerRadius = 8
             AnswersBar.maskedCorners = [.layerMaxXMinYCorner,.layerMaxXMaxYCorner,.layerMinXMinYCorner,.layerMinXMaxYCorner]
         }
         
@@ -108,7 +109,7 @@ class StudentsRecords : UIView {
         
         didSet {
             studentRecordDetails.sublayers?.forEach({$0.removeFromSuperlayer()})
-            studentRecordDetails.frame = CGRect(x: 0, y: 30, width: frame.width - 20, height: frame.height)
+            studentRecordDetails.frame = CGRect(x: 0, y: 0, width: frame.width - 20, height: frame.height)
             view1.frame = CGRect(x: 0, y: 0, width: frame.width, height: 52)
             view1.clipsToBounds = true
             view1.layer.cornerRadius = 12

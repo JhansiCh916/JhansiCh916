@@ -15,13 +15,56 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qPq-7m-PG9" customClass="TableView">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="250" id="yQd-pn-9kq" customClass="TableViewCell" customModule="CustomTask" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="250"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yQd-pn-9kq" id="iPI-Ae-JLx">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="250"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4N8-Gd-YQU">
+                                                    <rect key="frame" x="10" y="5" width="394" height="240"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="160" id="5gA-wb-5EN"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="4N8-Gd-YQU" secondAttribute="trailing" constant="10" id="9DL-k6-3cw"/>
+                                                <constraint firstAttribute="bottom" secondItem="4N8-Gd-YQU" secondAttribute="bottom" constant="5" id="Cl1-DW-cYw"/>
+                                                <constraint firstItem="4N8-Gd-YQU" firstAttribute="top" secondItem="iPI-Ae-JLx" secondAttribute="top" constant="5" id="eUw-eP-SIU"/>
+                                                <constraint firstItem="4N8-Gd-YQU" firstAttribute="leading" secondItem="iPI-Ae-JLx" secondAttribute="leading" constant="10" id="ocD-rP-8Q0"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="studentsRecords" destination="4N8-Gd-YQU" id="7TR-sC-39a"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="qPq-7m-PG9" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="QEd-bC-WGL"/>
+                            <constraint firstItem="qPq-7m-PG9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="agu-GC-gms"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="qPq-7m-PG9" secondAttribute="bottom" id="iFd-wO-kLN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qPq-7m-PG9" secondAttribute="trailing" id="tUs-nE-QPC"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="qPq-7m-PG9" id="agt-x7-yUC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="20" y="76"/>
+            <point key="canvasLocation" x="18.840579710144929" y="75.669642857142847"/>
         </scene>
     </scenes>
     <resources>
